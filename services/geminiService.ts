@@ -15,9 +15,6 @@ const UPLOADED_DOCS_STORAGE = 'foc_uploaded_docs';
 
 // ==================== API Key Management ====================
 
-/**
- * Get stored API key from localStorage
- */
 export function getStoredApiKey(): string | null {
     try {
         return localStorage.getItem(API_KEY_STORAGE);
@@ -26,9 +23,6 @@ export function getStoredApiKey(): string | null {
     }
 }
 
-/**
- * Save API key to localStorage
- */
 export function saveApiKey(apiKey: string): void {
     try {
         localStorage.setItem(API_KEY_STORAGE, apiKey);
@@ -37,9 +31,6 @@ export function saveApiKey(apiKey: string): void {
     }
 }
 
-/**
- * Clear stored API key
- */
 export function clearApiKey(): void {
     try {
         localStorage.removeItem(API_KEY_STORAGE);
@@ -50,16 +41,24 @@ export function clearApiKey(): void {
     }
 }
 
-/**
- * Check if an API key is configured (either stored or from env)
- */
 export function hasApiKey(): boolean {
     return !!(getStoredApiKey() || import.meta.env.VITE_GEMINI_API_KEY);
 }
 
 /**
- * Get the configured API key (stored takes precedence over env)
+ * Check if API key is from environment variable (pre-configured for production)
  */
+export function isUsingEnvApiKey(): boolean {
+    return !!import.meta.env.VITE_GEMINI_API_KEY;
+}
+
+/**
+ * Check if using global knowledgebase from environment variable
+ */
+export function isUsingGlobalKnowledgebase(): boolean {
+    return !!import.meta.env.VITE_RAG_STORE_NAME;
+}
+
 function getApiKey(): string | null {
     const storedKey = getStoredApiKey();
     if (storedKey) return storedKey;
@@ -70,9 +69,6 @@ function getApiKey(): string | null {
     return null;
 }
 
-/**
- * Initialize the Gemini AI client
- */
 export function initialize(customApiKey?: string): boolean {
     const apiKey = customApiKey || getApiKey();
 
@@ -99,9 +95,6 @@ export function initialize(customApiKey?: string): boolean {
     }
 }
 
-/**
- * Validate an API key by making a simple request
- */
 export async function validateApiKey(apiKey: string): Promise<boolean> {
     try {
         const testAi = new GoogleGenAI({ apiKey });
@@ -120,9 +113,14 @@ export async function validateApiKey(apiKey: string): Promise<boolean> {
 // ==================== Knowledgebase Persistence ====================
 
 /**
- * Get stored RAG store name from localStorage
+ * Get stored RAG store name from Environment Variable (Global) or localStorage (Local)
  */
 export function getStoredRagStore(): string | null {
+    // 1. Check Environment Variable (Shared/Permanent for Deployment)
+    const envStore = import.meta.env.VITE_RAG_STORE_NAME;
+    if (envStore) return envStore;
+
+    // 2. Check Local Storage (Browser session only)
     try {
         return localStorage.getItem(RAG_STORE_STORAGE);
     } catch {
@@ -130,9 +128,6 @@ export function getStoredRagStore(): string | null {
     }
 }
 
-/**
- * Save RAG store name to localStorage
- */
 export function saveRagStore(ragStoreName: string): void {
     try {
         localStorage.setItem(RAG_STORE_STORAGE, ragStoreName);
@@ -141,9 +136,6 @@ export function saveRagStore(ragStoreName: string): void {
     }
 }
 
-/**
- * Clear stored RAG store
- */
 export function clearStoredRagStore(): void {
     try {
         localStorage.removeItem(RAG_STORE_STORAGE);
@@ -153,11 +145,13 @@ export function clearStoredRagStore(): void {
     }
 }
 
-/**
- * Get stored uploaded document names
- */
 export function getStoredDocs(): string[] {
     try {
+        // If we have an env var store but no local docs, return a placeholder
+        if (import.meta.env.VITE_RAG_STORE_NAME && !localStorage.getItem(UPLOADED_DOCS_STORAGE)) {
+            return ["Global Knowledgebase (Vercel)"];
+        }
+
         const docs = localStorage.getItem(UPLOADED_DOCS_STORAGE);
         return docs ? JSON.parse(docs) : [];
     } catch {
@@ -165,9 +159,6 @@ export function getStoredDocs(): string[] {
     }
 }
 
-/**
- * Save uploaded document names
- */
 export function saveUploadedDocs(docs: string[]): void {
     try {
         localStorage.setItem(UPLOADED_DOCS_STORAGE, JSON.stringify(docs));
@@ -176,9 +167,6 @@ export function saveUploadedDocs(docs: string[]): void {
     }
 }
 
-/**
- * Check if knowledgebase is configured
- */
 export function hasKnowledgebase(): boolean {
     return !!getStoredRagStore();
 }
@@ -303,6 +291,11 @@ function getDefaultQuestions(): string[] {
 }
 
 export async function deleteRagStore(ragStoreName: string): Promise<void> {
+    // If it's a global/shared knowledgebase from env var, don't allow deletion from UI
+    if (import.meta.env.VITE_RAG_STORE_NAME === ragStoreName) {
+        throw new Error("Cannot delete global knowledgebase locally.");
+    }
+
     if (!ai) throw new Error("Gemini AI not initialized");
     try {
         await ai.fileSearchStores.delete({
@@ -317,10 +310,17 @@ export async function deleteRagStore(ragStoreName: string): Promise<void> {
 }
 
 /**
- * Delete current knowledgebase and clear storage
+ * Delete current knowledgebase (only local)
  */
 export async function clearKnowledgebase(): Promise<void> {
     const ragStoreName = getStoredRagStore();
+
+    // Protection against deleting global env var store
+    if (import.meta.env.VITE_RAG_STORE_NAME && ragStoreName === import.meta.env.VITE_RAG_STORE_NAME) {
+        console.warn("Attempted to clear global knowledgebase - ignoring.");
+        return;
+    }
+
     if (ragStoreName) {
         try {
             if (ai) {

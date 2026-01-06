@@ -92,14 +92,21 @@ Vercel should auto-detect Vite, but verify these settings:
 | Output Directory | `dist` |
 | Install Command | `npm install` |
 
-### Step 4: Add Environment Variable (Important!)
+### Step 4: Add Environment Variables (Important!)
 
 1. Expand **"Environment Variables"** section
 2. Add the following:
 
-| Name | Value |
-|------|-------|
-| `VITE_GEMINI_API_KEY` | Your Gemini API key (AIzaSy...) |
+| Name | Value | Description |
+|------|-------|-------------|
+| `VITE_GEMINI_API_KEY` | `AIzaSy...` | Your Gemini API Key |
+| `VITE_RAG_STORE_NAME` | `fileSearchStores/...` | The Knowledgebase ID (See below) |
+
+> **How to get the Knowledgebase ID?**
+> 1. Run the app locally (`npm run dev`)
+> 2. Go to **Admin Panel** → Upload your documents
+> 3. Copy the ID from the **"Save for Everyone"** section
+> 4. Paste it as `VITE_RAG_STORE_NAME` in Vercel
 
 > ⚠️ **Keep this secret!** Never share your API key publicly.
 
@@ -139,9 +146,10 @@ Vercel should auto-detect Vite, but verify these settings:
 1. Click **"Show advanced"** → **"New variable"**
 2. Add:
 
-| Key | Value |
-|-----|-------|
-| `VITE_GEMINI_API_KEY` | Your Gemini API key |
+| Key | Value | Description |
+|-----|-------|-------------|
+| `VITE_GEMINI_API_KEY` | `AIzaSy...` | Your Gemini API Key |
+| `VITE_RAG_STORE_NAME` | `fileSearchStores/...` | The Knowledgebase ID (from Admin Panel) |
 
 ### Step 5: Deploy!
 
