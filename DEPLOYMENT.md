@@ -232,7 +232,7 @@ npm run build 2>&1 | head -50
 Once deployed, share these links:
 
 - **For Users**: `https://your-app.vercel.app`
-- **For Admins**: `https://your-app.vercel.app` → Click 🔐 Admin → PIN: 1234
+- **For Admins**: `https://your-app.vercel.app` → Click 🔐 Admin → PIN: 9993
 
 ---
 

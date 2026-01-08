@@ -15,7 +15,7 @@ interface AdminPanelProps {
     onKnowledgebaseChange: () => void;
 }
 
-const ADMIN_PIN = '1234';
+const ADMIN_PIN = '9993';
 
 const AdminPanel: React.FC<AdminPanelProps> = ({
     onBack,
@@ -255,7 +255,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                     </form>
 
                     <p className="text-gray-500 text-xs mt-6">
-                        Demo PIN: 1234
+                        Demo PIN: 9993
                     </p>
                 </div>
             </div>
