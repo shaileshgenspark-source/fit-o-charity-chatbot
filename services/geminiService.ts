@@ -297,9 +297,9 @@ function getDefaultQuestions(): string[] {
 
 export async function deleteRagStore(ragStoreName: string): Promise<void> {
     // If it's a global/shared knowledgebase from env var, don't allow deletion from UI
-    if (import.meta.env.VITE_RAG_STORE_NAME === ragStoreName) {
-        throw new Error("Cannot delete global knowledgebase locally.");
-    }
+    // if (import.meta.env.VITE_RAG_STORE_NAME === ragStoreName) {
+    //    throw new Error("Cannot delete global knowledgebase locally.");
+    // }
 
     if (!ai) throw new Error("Gemini AI not initialized");
     try {
@@ -321,10 +321,10 @@ export async function clearKnowledgebase(): Promise<void> {
     const ragStoreName = getStoredRagStore();
 
     // Protection against deleting global env var store
-    if (import.meta.env.VITE_RAG_STORE_NAME && ragStoreName === import.meta.env.VITE_RAG_STORE_NAME) {
-        console.warn("Attempted to clear global knowledgebase - ignoring.");
-        return;
-    }
+    // if (import.meta.env.VITE_RAG_STORE_NAME && ragStoreName === import.meta.env.VITE_RAG_STORE_NAME) {
+    //    console.warn("Attempted to clear global knowledgebase - ignoring.");
+    //    return;
+    // }
 
     if (ragStoreName) {
         try {

@@ -409,22 +409,23 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                                 ))}
                             </div>
 
-                            {isEnvKnowledgebase ? (
+                            {/* Allow clearing even if Env Var is set, to fix broken states */}
+                            {/* {isEnvKnowledgebase ? (
                                 <div className="bg-foc-purple/10 border border-foc-purple/30 rounded-xl p-4 mt-4">
                                     <p className="text-foc-purple text-sm">
                                         ℹ️ This is a global permanent knowledgebase configured via environment variables.
                                         To change it, you must upload new documents, get the new ID, key update the environment variable in Vercel.
                                     </p>
                                 </div>
-                            ) : (
+                            ) : ( */}
                                 <button
                                     onClick={handleClearKnowledgebase}
                                     className="w-full btn-secondary text-red-400 hover:text-red-300 flex items-center justify-center gap-2"
                                 >
                                     <span>🗑</span>
-                                    <span>Clear Knowledgebase</span>
+                                    <span>Clear Knowledgebase (Force Reset)</span>
                                 </button>
-                            )}
+                            {/* )} */}
                         </div>
                     ) : (
                         <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4">
@@ -480,7 +481,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                 )}
 
                 {/* Upload New Documents */}
-                {!isEnvKnowledgebase && (
+                {/* {!isEnvKnowledgebase && ( */}
                     <div className="glass-card p-6">
                         <h2 className="font-poppins font-bold text-white text-lg mb-4 flex items-center gap-2">
                             <span>⬆️</span>
@@ -596,7 +597,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                             </div>
                         )}
                     </div>
-                )}
+                {/* )} */}
 
                 {/* Security Note */}
                 <div className="glass-card p-6 mt-6">
