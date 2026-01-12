@@ -197,6 +197,18 @@ const App: React.FC = () => {
             };
             setChatHistory(prev => [...prev, errorMessage]);
             console.error("Failed to get response", err);
+            
+            // Check for permission errors regarding the store
+            const errString = err instanceof Error ? err.message : String(err);
+            if (errString.includes('403') || errString.includes('PERMISSION_DENIED') || errString.includes('404') || errString.includes('NOT_FOUND')) {
+                const resetMessage: ChatMessage = {
+                    role: 'model',
+                    parts: [{ text: "It seems the Knowledge Base is inaccessible (expired or permission denied). Please reset it in the Admin panel." }]
+                };
+                 setChatHistory(prev => [...prev, resetMessage]);
+                 // Optionally force navigate to error screen or just let user read message
+            }
+
         } finally {
             setIsQueryLoading(false);
         }
