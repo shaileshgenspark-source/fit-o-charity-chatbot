@@ -204,25 +204,30 @@ export async function uploadToRagStore(ragStoreName: string, file: File): Promis
 
 export async function fileSearch(ragStoreName: string, query: string): Promise<QueryResult> {
     if (!ai) throw new Error("Gemini AI not initialized");
-    const response: GenerateContentResponse = await ai.models.generateContent({
-        model: 'gemini-1.5-flash',
-        contents: query + " DO NOT ASK THE USER TO READ THE MANUAL, pinpoint the relevant sections in the response itself. Be helpful and provide detailed answers about the Fit-O-Charity event.",
-        config: {
-            tools: [
-                {
-                    fileSearch: {
-                        fileSearchStoreNames: [ragStoreName],
+    try {
+        const response: GenerateContentResponse = await ai.models.generateContent({
+            model: 'gemini-1.5-flash',
+            contents: query + " DO NOT ASK THE USER TO READ THE MANUAL, pinpoint the relevant sections in the response itself. Be helpful and provide detailed answers about the Fit-O-Charity event.",
+            config: {
+                tools: [
+                    {
+                        fileSearch: {
+                            fileSearchStoreNames: [ragStoreName],
+                        }
                     }
-                }
-            ]
-        }
-    });
+                ]
+            }
+        });
 
-    const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
-    return {
-        text: response.text,
-        groundingChunks: groundingChunks,
-    };
+        const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks || [];
+        return {
+            text: response.text,
+            groundingChunks: groundingChunks,
+        };
+    } catch (error) {
+        console.error("File Search Error:", error);
+        throw error;
+    }
 }
 
 export async function generateExampleQuestions(ragStoreName: string): Promise<string[]> {

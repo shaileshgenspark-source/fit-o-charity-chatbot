@@ -193,7 +193,7 @@ const App: React.FC = () => {
         } catch (err) {
             const errorMessage: ChatMessage = {
                 role: 'model',
-                parts: [{ text: "Sorry, I encountered an error. Please try again. 💪" }]
+                parts: [{ text: `Sorry, I encountered an error: ${err instanceof Error ? err.message : String(err)}. Please check the console for more details.` }]
             };
             setChatHistory(prev => [...prev, errorMessage]);
             console.error("Failed to get response", err);
