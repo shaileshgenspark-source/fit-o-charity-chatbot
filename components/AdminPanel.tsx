@@ -437,7 +437,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({
                 </div>
 
                 {/* Permanent Hosting Configuration */}
-                {hasKnowledgebase && !isEnvKnowledgebase && (
+                {hasKnowledgebase && (
                     <div className="glass-card-strong p-6 mb-6">
                         <h2 className="font-poppins font-bold text-white text-lg mb-4 flex items-center gap-2">
                             <span>🚀</span>
