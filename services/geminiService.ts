@@ -99,7 +99,7 @@ export async function validateApiKey(apiKey: string): Promise<boolean> {
     try {
         const testAi = new GoogleGenAI({ apiKey });
         await testAi.models.generateContent({
-            model: 'gemini-2.0-flash',
+            model: 'gemini-2.5-flash',
             contents: 'Hi',
             config: { maxOutputTokens: 5 }
         });
@@ -206,7 +206,7 @@ export async function fileSearch(ragStoreName: string, query: string): Promise<Q
     if (!ai) throw new Error("Gemini AI not initialized");
     try {
         const response: GenerateContentResponse = await ai.models.generateContent({
-            model: 'gemini-2.0-flash',
+            model: 'gemini-2.5-flash',
             contents: query + " DO NOT ASK THE USER TO READ THE MANUAL, pinpoint the relevant sections in the response itself. Be helpful and provide detailed answers about the Fit-O-Charity event.",
             config: {
                 tools: [
@@ -234,7 +234,7 @@ export async function generateExampleQuestions(ragStoreName: string): Promise<st
     if (!ai) throw new Error("Gemini AI not initialized");
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-2.0-flash',
+            model: 'gemini-2.5-flash',
             contents: "You are provided documents about a fitness charity event called Fit-O-Charity. Generate 6 short and practical example questions a user might ask about the event in English. Focus on registration, activities, rules, prizes, and charity aspects. Return the questions as a JSON array of strings. Example: [\"How do I register?\", \"What activities are included?\"]",
             config: {
                 tools: [
