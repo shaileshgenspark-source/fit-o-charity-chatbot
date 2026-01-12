@@ -87,6 +87,18 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
                         Fit-O-Charity 2026
                     </h2>
 
+                    <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+                        <a 
+                            href="https://pages.razorpay.com/SFOC4" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="btn-primary text-xl px-8 py-4 flex items-center justify-center gap-3 animate-glow-orange"
+                        >
+                            <span>📝</span>
+                            <span>Register Now!</span>
+                        </a>
+                    </div>
+
                     <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-8">
                         A <span className="text-foc-orange font-semibold">21-day virtual fitness challenge</span> to make you a philanthropist!
                         Ask anything about the event below.
