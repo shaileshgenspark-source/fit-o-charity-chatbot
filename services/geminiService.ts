@@ -116,16 +116,19 @@ export async function validateApiKey(apiKey: string): Promise<boolean> {
  * Get stored RAG store name from Environment Variable (Global) or localStorage (Local)
  */
 export function getStoredRagStore(): string | null {
-    // 1. Check Environment Variable (Shared/Permanent for Deployment)
+    // 1. Check Local Storage (User override / Local dev) - PRIORITIZED
+    try {
+        const localStore = localStorage.getItem(RAG_STORE_STORAGE);
+        if (localStore) return localStore;
+    } catch {
+        // ignore
+    }
+
+    // 2. Check Environment Variable (Shared/Permanent for Deployment)
     const envStore = import.meta.env.VITE_RAG_STORE_NAME;
     if (envStore) return envStore;
 
-    // 2. Check Local Storage (Browser session only)
-    try {
-        return localStorage.getItem(RAG_STORE_STORAGE);
-    } catch {
-        return null;
-    }
+    return null;
 }
 
 export function saveRagStore(ragStoreName: string): void {
