@@ -97,6 +97,15 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
                             <span>📝</span>
                             <span>Register Now!</span>
                         </a>
+                        <a 
+                            href="https://fit-o-charity-dashboard.shailesh-genspark.workers.dev/" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="btn-activity text-xl px-8 py-4 flex items-center justify-center gap-3"
+                        >
+                            <span>🏆</span>
+                            <span>SUBMIT ACTIVITY</span>
+                        </a>
                     </div>
 
                     <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-8">
@@ -196,6 +205,16 @@ const WelcomeScreen: React.FC<WelcomeScreenProps> = ({
                                     <span>🚀</span>
                                     <span>Start Chatting</span>
                                 </button>
+
+                                <a 
+                                    href="https://fit-o-charity-dashboard.shailesh-genspark.workers.dev/" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="w-full btn-activity text-lg flex items-center justify-center gap-2 py-4"
+                                >
+                                    <span>🏆</span>
+                                    <span>SUBMIT ACTIVITY</span>
+                                </a>
 
                                 {/* Show uploaded docs */}
                                 {uploadedDocs.length > 0 && (

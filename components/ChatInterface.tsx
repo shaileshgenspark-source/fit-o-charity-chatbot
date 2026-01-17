@@ -180,6 +180,18 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
                                 Ask me anything about the event
                             </p>
 
+                            <div className="mb-8 max-w-xs mx-auto">
+                                <a 
+                                    href="https://fit-o-charity-dashboard.shailesh-genspark.workers.dev/" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="w-full btn-activity text-lg flex items-center justify-center gap-2 py-4"
+                                >
+                                    <span>🏆</span>
+                                    <span>SUBMIT ACTIVITY</span>
+                                </a>
+                            </div>
+
                             {/* Quick Suggestions */}
                             <div className="flex flex-wrap justify-center gap-2">
                                 {quickSuggestions.map((suggestion) => (
